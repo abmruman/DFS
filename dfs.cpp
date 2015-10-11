@@ -3,7 +3,7 @@ using namespace std;
 
 #define MAX 20
 
-int n, e, adj[MAX][MAX], time, c, t;
+int n, e, adj[MAX][MAX], time, c, z, s, g;
 char color[MAX], gt='d';
 int d[MAX], f[MAX], p[MAX];
 bool found = false;
@@ -27,8 +27,8 @@ void print_cycle(int u, int t){
 }
 
 void dfs(int u, int t){
-    for (int u=1; u<=t; u++){
-        color[u]='w';
+    for (int i=1; i<=t; i++){
+        color[i]='w';
     }
     time=0;
 
@@ -57,8 +57,8 @@ void dfs_visit(int u, int t){
 
                 dfs_visit(v,t);
                 if(v==t){
-                    found = true;
-                    cout << "\nGoal Found.";
+                    //found = true;
+                    //cout << "\nGoal Found.";
                     return;
                 }
             }
@@ -67,7 +67,7 @@ void dfs_visit(int u, int t){
                 if (u!=v){
                     cout << "\nCycle exists: ";
                     //cout << v << " ";
-                    //c=1; t=v;
+                    //c=1; z=v;
                     int r = v;
                     int i = u;
                     cout << v;
@@ -87,9 +87,9 @@ void dfs_visit(int u, int t){
 
     /*if (c==1){
         cout << u << " ";
-        if (u==t) {
+        if (u==z) {
             c=0;
-            t=0;
+            z=0;
         }
     }*/
     color[u] ='b';
@@ -102,6 +102,15 @@ int main(){
     cin >> n;
     cout << "Enter Number of edges: ";
     cin >> e;
+    cout << "Enter graph type [undirected=u, directed=d]: ";
+    cin >> gt;
+
+    cout << "Enter start node: ";
+    cin >> s;
+
+    cout << "Enter goal node: ";
+    cin >> g;
+
 
     cout << "Enter neighbour vertices: " << endl;
 
@@ -117,7 +126,7 @@ int main(){
 
     }
 
-    dfs(2,6);
+    dfs(s,g);
     if (!found)
         cout << "\nGoal not found.\n";
 /*
@@ -155,6 +164,9 @@ int main(){
 /*
 6
 8
+d
+2
+6
 1 2
 1 4
 2 3
