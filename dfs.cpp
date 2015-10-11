@@ -6,9 +6,9 @@ using namespace std;
 int n, e, adj[MAX][MAX], time, c, t;
 char color[MAX], gt='d';
 int d[MAX], f[MAX], p[MAX];
-
-void dfs_visit(int u);
-void dfs();
+bool found = false;
+void dfs_visit(int u, int t);
+void dfs(int u, int t);
 /*
 void print_cycle(int u){
     int t=u;
@@ -26,31 +26,41 @@ void print_cycle(int u, int t){
 
 }
 
-void dfs(){
-    for (int u=1; u<=n; u++){
+void dfs(int u, int t){
+    for (int u=1; u<=t; u++){
         color[u]='w';
     }
     time=0;
 
-    for (int u=1; u<=n; u++){
+    //for (; u<=t; u++){
         if(color[u]=='w')
-            dfs_visit(u);
-    }
+            dfs_visit(u,t);
+    //}
     cout << endl;
 }
 
-void dfs_visit(int u){
+void dfs_visit(int u, int t){
     color[u]='g';
     time++;
     d[u]= time;
     cout << u << " ";
-    if (u != t){
-        for(int v=1; v<=n; v++){
+    if (u == t) {
+        found = true;
+        cout << "\nGoal Found.\n";
+        return;
+    }
+
+    for(int v=1; v<=n; v++){
         if (adj[u][v]==1){
             if(color[v] == 'w'){
                 p[v]=u;
 
-                dfs_visit(v);
+                dfs_visit(v,t);
+                if(v==t){
+                    found = true;
+                    cout << "\nGoal Found.";
+                    return;
+                }
             }
             /* Cycle detection */
             /*else if(color[v] == 'g'){
@@ -73,7 +83,7 @@ void dfs_visit(int u){
             }*/
         }
     }
-    }
+
 
     /*if (c==1){
         cout << u << " ";
@@ -107,14 +117,17 @@ int main(){
 
     }
 
-    dfs();
-
+    dfs(2,6);
+    if (!found)
+        cout << "\nGoal not found.\n";
+/*
     cout << "d[] = ";
     for (int i=1; i<=n; i++){
         cout << d[i] << ' ';
     }
 
     cout << endl;
+
     cout << "f[] = ";
     for (int i=1; i<=n; i++){
         cout << f[i] << ' ';
@@ -128,14 +141,14 @@ int main(){
     }
 
     cout << endl;
-    /*
+
     for (int i=1; i<=n; i++){
         for (int j=1; j<=n; j++){
             cout << adj[i][j] << " ";
         }
         cout << endl;
     }
-    */
+*/
     return 0;
 }
 
