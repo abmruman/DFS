@@ -1,187 +1,101 @@
+/**
+ *
+ * @author A B M Ruman
+ *
+ **/
 #include <iostream>
 using namespace std;
 
 #define MAX 20
 
-int n, e, adj[MAX][MAX], time, c, z, s, g;
-char color[MAX], gt='d';
-int d[MAX], f[MAX], p[MAX];
+int nodes, edges, start, goal, time,
+    discovered[MAX], finished[MAX], parent[MAX],
+    adjacencyMatrix[MAX][MAX];
+char color[MAX], graphType='d';
 bool found = false;
-void dfs_visit(int u, int t);
-void dfs(int u, int t);
-/*
-void print_cycle(int u){
-    int t=u;
-    for(int v=1; v<=n; v++){
-        if(adj[u][v]==1){
-            cout << u<< " ";
-            u=v;
+
+void dfs_visit(int, int);
+void dfs(int, int);
+
+int main(){
+    int u, v;
+
+    cout << "Enter Number of vertices: ";
+    cin >> nodes;
+
+    cout << "Enter Number of edges: ";
+    cin >> edges;
+
+    cout << "Enter graph type [undirected=u, directed=d]: ";
+    cin >> graphType;
+
+    cout << "Enter start node: ";
+    cin >> start;
+
+    cout << "Enter goal node: ";
+    cin >> goal;
+
+    cout << "Enter neighbour vertices: " << endl;
+
+    for (int i=1; i<=edges; i++){
+        cin >> u >> v;
+
+        switch(graphType){
+        case 'u':
+            adjacencyMatrix[v][u] = 1;
+        case 'd':
+            adjacencyMatrix[u][v] = 1;
+            break;
         }
-
-        if (v==t) break;
     }
-}
-*/
-void print_cycle(int u, int t){
+    cout <<"Result:\n";
 
+    dfs(start,goal);
+
+    if (!found)
+        cout << "\nGoal not found.\n";
+
+    return 0;
 }
 
-void dfs(int u, int t){
-    for (int i=1; i<=t; i++){
+void dfs(int s, int g){
+    for (int i=1; i<=g; i++){
         color[i]='w';
     }
     time=0;
 
-    //for (; u<=t; u++){
-        if(color[u]=='w')
-            dfs_visit(u,t);
-    //}
+    if(color[s]=='w')
+        dfs_visit(s,g);
+
     cout << endl;
 }
 
-void dfs_visit(int u, int t){
-    color[u]='g';
+void dfs_visit(int s, int g){
+    color[s]='g';
     time++;
-    d[u]= time;
-    cout << u << " ";
-    if (u == t) {
+    discovered[s]= time;
+    cout << s << " ";
+    if (s == g) {
         found = true;
         cout << "\nGoal Found.\n";
         return;
     }
 
-    for(int v=1; v<=n; v++){
-        if (adj[u][v]==1){
+    for(int v=1; v<=nodes; v++){
+        if (adjacencyMatrix[s][v]==1){
             if(color[v] == 'w'){
-                p[v]=u;
+                parent[v]=s;
 
-                dfs_visit(v,t);
-                if(v==t){
-                    //found = true;
-                    //cout << "\nGoal Found.";
+                dfs_visit(v,g);
+
+                if(v==g){
                     return;
                 }
             }
-            /* Cycle detection */
-            /*else if(color[v] == 'g'){
-                if (u!=v){
-                    cout << "\nCycle exists: ";
-                    //cout << v << " ";
-                    //c=1; z=v;
-                    int r = v;
-                    int i = u;
-                    cout << v;
-                    cout << u;
-                    while(1)
-                    {
-                        cout << p[i] << " ";
-                        i = p[i];
-                        if(p[i] == r)
-                            break;
-                    }
-                }
-            }*/
         }
     }
 
-
-    /*if (c==1){
-        cout << u << " ";
-        if (u==z) {
-            c=0;
-            z=0;
-        }
-    }*/
-    color[u] ='b';
+    color[s] ='b';
     time++;
-    f[u] = time;
+    finished[s] = time;
 }
-int main(){
-    int u, v;
-    cout << "Enter Number of vertices: ";
-    cin >> n;
-    cout << "Enter Number of edges: ";
-    cin >> e;
-    cout << "Enter graph type [undirected=u, directed=d]: ";
-    cin >> gt;
-
-    cout << "Enter start node: ";
-    cin >> s;
-
-    cout << "Enter goal node: ";
-    cin >> g;
-
-
-    cout << "Enter neighbour vertices: " << endl;
-
-    for (int i=1; i<=e; i++){
-        cin >> u >> v;
-        switch(gt){
-        case 'u':
-            adj[v][u] = 1;
-        case 'd':
-            adj[u][v] = 1;
-            break;
-        }
-
-    }
-
-    dfs(s,g);
-    if (!found)
-        cout << "\nGoal not found.\n";
-/*
-    cout << "d[] = ";
-    for (int i=1; i<=n; i++){
-        cout << d[i] << ' ';
-    }
-
-    cout << endl;
-
-    cout << "f[] = ";
-    for (int i=1; i<=n; i++){
-        cout << f[i] << ' ';
-    }
-
-    cout << endl;
-
-    cout << "p[] = ";
-    for (int i=1; i<=n; i++){
-        cout << p[i] << ' ';
-    }
-
-    cout << endl;
-
-    for (int i=1; i<=n; i++){
-        for (int j=1; j<=n; j++){
-            cout << adj[i][j] << " ";
-        }
-        cout << endl;
-    }
-*/
-    return 0;
-}
-
-/*
-6
-8
-d
-2
-6
-1 2
-1 4
-2 3
-3 4
-4 2
-5 3
-5 6
-6 6
-*/
-
-/*
-0 1 0 1 0 0
-0 0 1 0 0 0
-0 0 0 1 0 0
-0 1 0 0 0 0
-0 0 1 0 0 1
-0 0 0 0 0 1
-*/
