@@ -17,6 +17,7 @@ bool found = false;
 
 void dfs_visit(int, int);
 void dfs(int, int);
+void print_cycle(int, int);
 
 int main(){
     int u, v;
@@ -93,6 +94,25 @@ void dfs_visit(int s, int g){
                     return;
                 }
             }
+            /* Cycle detection */
+            /*else if(color[v] == 'g'){
+                if (u!=v){
+                    cout << "\nCycle exists: ";
+                    //cout << v << " ";
+                    //c=1; z=v;
+                    int r = v;
+                    int i = u;
+                    cout << v;
+                    cout << u;
+                    while(1)
+                    {
+                        cout << p[i] << " ";
+                        i = p[i];
+                        if(p[i] == r)
+                            break;
+                    }
+                }
+            }*/
         }
     }
 
@@ -100,3 +120,16 @@ void dfs_visit(int s, int g){
     time++;
     finished[s] = time;
 }
+
+void print_cycle(int u, int t){
+    //int t=u;
+    for(int v=1, t=u; v<=nodes; v++){
+        if(adjacencyMatrix[t][v]==1){
+            cout << t<< " ";
+            t=v;
+        }
+
+        if (v==u) break;
+    }
+}
+
