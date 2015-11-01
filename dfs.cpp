@@ -1,6 +1,7 @@
 /**
  *
- * @author A B M Ruman
+ *  @name Depth-first search
+ *  @author A B M Ruman
  *
  **/
 #include <iostream>
